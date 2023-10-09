@@ -6538,7 +6538,10 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _walletConnect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./walletConnect */ "./resources/js/walletConnect.js");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main */ "./resources/js/main.js");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_main__WEBPACK_IMPORTED_MODULE_1__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 /***/ }),
@@ -6579,6 +6582,16 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/main.js":
+/*!******************************!*\
+  !*** ./resources/js/main.js ***!
+  \******************************/
+/***/ (() => {
+
+
+
+/***/ }),
+
 /***/ "./resources/js/walletConnect.js":
 /*!***************************************!*\
   !*** ./resources/js/walletConnect.js ***!
@@ -6590,6 +6603,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _web3modal_wagmi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @web3modal/wagmi */ "./node_modules/@web3modal/wagmi/dist/esm/exports/index.js");
 /* harmony import */ var _wagmi_core_chains__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wagmi/core/chains */ "./node_modules/viem/_esm/chains/definitions/mainnet.js");
 /* harmony import */ var _wagmi_core_chains__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wagmi/core/chains */ "./node_modules/viem/_esm/chains/definitions/arbitrum.js");
+/* harmony import */ var _wagmi_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wagmi/core */ "./node_modules/@wagmi/core/dist/chunk-YAPWLAI7.js");
 
 
 
@@ -6611,11 +6625,34 @@ var wagmiConfig = (0,_web3modal_wagmi__WEBPACK_IMPORTED_MODULE_0__.defaultWagmiC
 });
 
 // 3. Create modal
-
-(0,_web3modal_wagmi__WEBPACK_IMPORTED_MODULE_0__.createWeb3Modal)({
+var modal = (0,_web3modal_wagmi__WEBPACK_IMPORTED_MODULE_0__.createWeb3Modal)({
   wagmiConfig: wagmiConfig,
   projectId: projectId,
   chains: chains
+});
+
+//main.js
+
+function connect() {
+  if ((0,_wagmi_core__WEBPACK_IMPORTED_MODULE_3__.getAccount)().isConnected) {
+    (0,_wagmi_core__WEBPACK_IMPORTED_MODULE_3__.disconnect)();
+  } else {
+    modal.open();
+  }
+}
+var btnEl = document.getElementById('btn');
+var userEl = document.getElementById('user');
+btnEl.addEventListener('click', connect);
+
+// listening for account changes
+(0,_wagmi_core__WEBPACK_IMPORTED_MODULE_3__.watchAccount)(function (account) {
+  var _account$address;
+  userEl.innerText = (_account$address = account.address) !== null && _account$address !== void 0 ? _account$address : '';
+  if (account.isConnected) {
+    btnEl.innerText = 'Disconnect';
+  } else {
+    btnEl.innerText = 'Connect';
+  }
 });
 
 /***/ }),

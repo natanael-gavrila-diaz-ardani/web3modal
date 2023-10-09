@@ -8,7 +8,8 @@
   <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script> --}}
 </head>
 <body>
-    <w3m-button></w3m-button>
+    <button id="btn">Connect</button>
+    <span id="user"></span>
 
   <script src="{{ asset('js/app.js') }}"></script>
 

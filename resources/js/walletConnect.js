@@ -17,8 +17,31 @@ const chains = [mainnet, arbitrum]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
 // 3. Create modal
+const modal = createWeb3Modal({ wagmiConfig, projectId, chains })
 
- createWeb3Modal({
-    wagmiConfig, projectId, chains,
+
+//main.js
+import { watchAccount, disconnect, getAccount } from '@wagmi/core'
+
+function connect() {
+  if (getAccount().isConnected) {
+    disconnect()
+  } else {
+    modal.open()
+  }
+}
+
+const btnEl = document.getElementById('btn')
+const userEl = document.getElementById('user')
+
+btnEl.addEventListener('click', connect)
+
+// listening for account changes
+watchAccount(account => {
+  userEl.innerText = account.address ?? ''
+  if (account.isConnected) {
+    btnEl.innerText = 'Disconnect'
+  } else {
+    btnEl.innerText = 'Connect'
+  }
 })
-
